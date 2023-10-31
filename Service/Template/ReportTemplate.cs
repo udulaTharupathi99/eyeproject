@@ -32,7 +32,7 @@ public class ReportTemplate
                     x.Item().Text(x =>
                     {
                         x.Span("Powered By ");
-                        x.Hyperlink("abc", "abc").Style(titleStyle);
+                        x.Hyperlink("OCULARTECH.AI", "abc").Style(titleStyle);
                     });
                     x.Item().AlignCenter().Text(x =>
                     {
@@ -100,15 +100,25 @@ public class ReportTemplate
         {
             column.Spacing(5);
 
-            // column.Item().Row(row =>
-            // {
-            //     row.RelativeItem().Component(new AddressComponent("Billing From", _companyModel.Info.Address,
-            //         _companyModel.Info.Email, _companyModel.Name));
-            //     row.ConstantItem(50);
-            //     row.RelativeItem().Component(new AddressComponent("Billing To",
-            //         _invoiceModel.InvoiceDetails.CustomerAddress, _invoiceModel.InvoiceDetails.CustomerEmail,
-            //         _invoiceModel.InvoiceDetails.CustomerName));
-            // });
+            column.Item().Row(row =>
+            {
+                row.RelativeItem().Component(new PatientOne(_paientModel.FullName, _paientModel.Dob, _paientModel.Gender));
+                row.ConstantItem(50);
+                row.RelativeItem().Component(new PatientTwo(_paientModel.IdentityCardNo, _paientModel.MobileNo, _paientModel.Email, _paientModel.Address, _paientModel.District));
+            });
+            
+            column.Item().Row(row =>
+            {
+                row.RelativeItem().Column(column =>
+                {
+                    column.Spacing(2);
+                    column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingBottom(5).Text("Img")
+                        .Style(subtitleStyle);
+                   
+                    
+                    column.Item().Height(90).Image(_reportModel.Img, ImageScaling.FitArea);
+                });
+            });
 
             column.Item().Row(row =>
             {
@@ -117,7 +127,9 @@ public class ReportTemplate
                     column.Spacing(2);
                     column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingBottom(5).Text("Res")
                         .Style(subtitleStyle);
-                    column.Item().Text($"{_reportModel.Result}");
+                    column.Item().Text(_reportModel.Result);
+                    column.Item().Text(_reportModel.Doctor_comment);
+                    column.Item().Text(_reportModel.Scan_date);
                 });
             });
 
@@ -132,6 +144,19 @@ public class ReportTemplate
                     column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingTop(5).PaddingBottom(5)
                         .Text("Notes").Style(subtitleStyle);
                     column.Item().Text($"{_reportModel.Doctor_comment}");
+                });
+            });
+            
+            column.Item().Row(row =>
+            {
+                row.RelativeItem().Column(column =>
+                {
+                    column.Spacing(2);
+                    column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingBottom(5).Text("QR")
+                        .Style(subtitleStyle);
+                    
+                    
+                    column.Item().Height(90).Image(_reportModel.QrImg, ImageScaling.FitArea);
                 });
             });
         });
