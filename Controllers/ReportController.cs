@@ -21,6 +21,6 @@ public class ReportController : Controller
         
         var result = await _reportService.CreateReport(request);
         //return result;
-        return File(result, "application/pdf", "abc");
+        return File(result, "application/pdf", request.report.ReportID);
     }
 }
