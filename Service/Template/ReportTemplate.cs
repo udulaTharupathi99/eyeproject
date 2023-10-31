@@ -47,9 +47,12 @@ public class ReportTemplate
     
     private void ComposeHeader(IContainer container)
     {
-        var titleStyle = TextStyle.Default.FontSize(18).FontFamily("Times New Roman").FontColor(Colors.White);
+        var titleStyle = TextStyle.Default.FontSize(20).FontFamily("Times New Roman").FontColor(Colors.White);
         var subtitleStyle = TextStyle.Default.FontSize(9).FontFamily("Times New Roman").FontColor(Colors.Grey.Lighten2);
         var textStyle = TextStyle.Default.FontSize(9).FontColor(Colors.Grey.Lighten5);
+        
+        var titleStyle2 = TextStyle.Default.FontSize(12).FontFamily("Times New Roman").FontColor(Colors.White);
+        
         container.Background("#086db4").PaddingVertical(20).PaddingHorizontal(30).Row(row =>
         {
             row.RelativeItem().Column(column =>
@@ -58,30 +61,14 @@ public class ReportTemplate
 
                 column.Item().PaddingBottom(10).Text(text =>
                 {
-                    text.Span("Report ID: ").Style(subtitleStyle);
-                    text.Span($"{_reportModel.ReportID}").Style(textStyle);
+                    text.Span("Report ID: ").Style(titleStyle2);
+                    text.Span($"{_reportModel.ReportID}").Style(titleStyle2);
                 });
                 column.Item().PaddingBottom(10).Text(text =>
                 {
-                    text.Span("Date: ").Style(subtitleStyle);
-                    text.Span(DateTime.Now.ToShortDateString()).Style(textStyle);
+                    text.Span("Date: ").Style(titleStyle2);
+                    text.Span(DateTime.Now.ToShortDateString()).Style(titleStyle2);
                 });
-
-                // column.Item().Text(text =>
-                // {
-                //     text.Span("Issue date: ").Style(subtitleStyle);
-                //     text.Span(
-                //             $"{InfrastructureHelperFunction.RemoveTimeFromDateTime(_invoiceModel.InvoiceDetails.InvoiceDate)}")
-                //         .Style(textStyle);
-                // });
-                //
-                // column.Item().Text(text =>
-                // {
-                //     text.Span("Due date: ").Style(subtitleStyle);
-                //     text.Span(
-                //             $"{InfrastructureHelperFunction.RemoveTimeFromDateTime(_invoiceModel.InvoiceDetails.DueDate)}")
-                //         .Style(textStyle);
-                // });
             });
 
             if (_reportModel.Logoimg != null)
@@ -98,65 +85,83 @@ public class ReportTemplate
 
         container.PaddingVertical(20).PaddingHorizontal(30).Column(column =>
         {
-            column.Spacing(5);
+            column.Spacing(30);
 
             column.Item().Row(row =>
             {
-                row.RelativeItem().Component(new PatientOne(_paientModel.FullName, _paientModel.Dob, _paientModel.Gender));
+                column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingBottom(5).Text("Patient Details")
+                    .Style(subtitleStyle);
+                
+                
+                column.Item().Row(row =>
+                {
+                    
+                    // column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingBottom(5).Text("Patient Details")
+                    //     .Style(subtitleStyle);
+                    
+                    row.RelativeItem().Component(new PatientOne(_paientModel.FullName, _paientModel.Dob, _paientModel.Gender, _paientModel.IdentityCardNo));
+                    row.ConstantItem(50);
+                    row.RelativeItem().Component(new PatientTwo(_paientModel.IdentityCardNo, _paientModel.MobileNo, _paientModel.Email, _paientModel.Address, _paientModel.District));
+                });
+            });
+            
+            //column.Spacing(20);
+            
+            column.Item().Row(row =>
+            {
+                row.RelativeItem().Component(new InputImage(_reportModel.Img));
                 row.ConstantItem(50);
-                row.RelativeItem().Component(new PatientTwo(_paientModel.IdentityCardNo, _paientModel.MobileNo, _paientModel.Email, _paientModel.Address, _paientModel.District));
+                row.RelativeItem().Component(new ImageResult(_reportModel.Result, _reportModel.Scan_date, _reportModel.Doctor_comment));
             });
+            
+            // column.Item().Row(row =>
+            // {
+            //     row.RelativeItem().Column(column =>
+            //     {
+            //         column.Spacing(2);
+            //         column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingBottom(5).Text("Img")
+            //             .Style(subtitleStyle);
+            //        
+            //         
+            //         column.Item().Height(90).Image(_reportModel.Img, ImageScaling.FitArea);
+            //     });
+            //     
+            //     row.RelativeItem().Column(column =>
+            //     {
+            //         column.Spacing(2);
+            //         // column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingBottom(5).Text("Res")
+            //         //     .Style(subtitleStyle);
+            //         column.Item().Text(_reportModel.Result);
+            //         column.Item().Text(_reportModel.Doctor_comment);
+            //         column.Item().Text(_reportModel.Scan_date);
+            //     });
+            // });
+
+            
+
+            // column.Item().Row(row =>
+            // {
+            //     row.RelativeItem().Column(column =>
+            //     {
+            //         column.Spacing(2);
+            //         column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingTop(5).PaddingBottom(5)
+            //             .Text("Notes").Style(subtitleStyle);
+            //         column.Item().Text($"{_reportModel.Doctor_comment}");
+            //     });
+            // });
+            
+            //column.Spacing(30);
             
             column.Item().Row(row =>
             {
                 row.RelativeItem().Column(column =>
                 {
                     column.Spacing(2);
-                    column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingBottom(5).Text("Img")
-                        .Style(subtitleStyle);
-                   
-                    
-                    column.Item().Height(90).Image(_reportModel.Img, ImageScaling.FitArea);
-                });
-            });
-
-            column.Item().Row(row =>
-            {
-                row.RelativeItem().Column(column =>
-                {
-                    column.Spacing(2);
-                    column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingBottom(5).Text("Res")
-                        .Style(subtitleStyle);
-                    column.Item().Text(_reportModel.Result);
-                    column.Item().Text(_reportModel.Doctor_comment);
-                    column.Item().Text(_reportModel.Scan_date);
-                });
-            });
-
-            // column.Item().PaddingTop(20).Element(ComposeTable);
-            // column.Item().PaddingTop(15).AlignRight().Element(ComposeSummaryTable);
-
-            column.Item().Row(row =>
-            {
-                row.RelativeItem().Column(column =>
-                {
-                    column.Spacing(2);
-                    column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingTop(5).PaddingBottom(5)
-                        .Text("Notes").Style(subtitleStyle);
-                    column.Item().Text($"{_reportModel.Doctor_comment}");
-                });
-            });
-            
-            column.Item().Row(row =>
-            {
-                row.RelativeItem().Column(column =>
-                {
-                    column.Spacing(2);
-                    column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingBottom(5).Text("QR")
+                    column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingBottom(5).Text("QR : Scan this for get your soft copy of the report")
                         .Style(subtitleStyle);
                     
                     
-                    column.Item().Height(90).Image(_reportModel.QrImg, ImageScaling.FitArea);
+                    column.Item().Height(90).PaddingTop(10).Image(_reportModel.QrImg, ImageScaling.FitArea);
                 });
             });
         });

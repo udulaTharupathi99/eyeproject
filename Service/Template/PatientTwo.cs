@@ -23,21 +23,46 @@ public class PatientTwo :IComponent
     
     public void Compose(IContainer container)
     {
-        var nameStyle = TextStyle.Default.FontSize(15).FontFamily("Times New Roman").FontColor(Colors.Blue.Medium);
+        var nameStyle = TextStyle.Default.FontFamily("Times New Roman").SemiBold();
         var subtitleStyle = TextStyle.Default.FontFamily("Times New Roman");
 
-        container.PaddingBottom(10).Column(column =>
+        container.PaddingBottom(10).PaddingTop(-20).Column(column =>
         {
             column.Spacing(2);
 
-            column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingBottom(5).Text("Patient2")
-                .Style(subtitleStyle);
-
-            column.Item().Text(NIC);
-            column.Item().Text(MobileNo);
-            column.Item().Text(Email);
-            column.Item().Text(Address);
-            column.Item().Text(District);
+            // column.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingBottom(20);
+                
+            // column.Item().Text(text =>
+            // {
+            //     text.Span("NIC : ").Style(subtitleStyle);
+            //     text.Span(NIC).Style(nameStyle);
+            // });
+            column.Item().Text(text =>
+            {
+                text.Span("MobileNo : ").Style(subtitleStyle);
+                text.Span(MobileNo).Style(nameStyle);
+            });
+            column.Item().Text(text =>
+            {
+                text.Span("Email : ").Style(subtitleStyle);
+                text.Span(Email).Style(nameStyle);
+            });
+            column.Item().Text(text =>
+            {
+                text.Span("Address : ").Style(subtitleStyle);
+                text.Span(Address).Style(nameStyle);
+            });
+            column.Item().Text(text =>
+            {
+                text.Span("District : ").Style(subtitleStyle);
+                text.Span(District).Style(nameStyle);
+            });
+            
+            // column.Item().Text(NIC);
+            // column.Item().Text(MobileNo);
+            // column.Item().Text(Email);
+            // column.Item().Text(Address);
+            // column.Item().Text(District);
         });
     }
 }
