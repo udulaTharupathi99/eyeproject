@@ -5,6 +5,8 @@ using QuestPDF.Fluent;
 
 namespace eyeproject.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class ReportController : Controller
 {
     private IReportService _reportService;

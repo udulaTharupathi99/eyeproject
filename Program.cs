@@ -1,4 +1,6 @@
 using eyeproject.Service;
+using QuestPDF.Drawing;
+using QuestPDF.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IReportService, ReportService>();
 builder.Services.AddSingleton<IDocumentService, DocumentService>();
+
+//FontManager.RegisterFont( File.OpenRead("Times New Roman"));
+FontManager.RegisterFont( File.OpenRead("Times New Roman/times new roman.ttf"));
+// FontManager.RegisterFont( File.OpenRead("Times New Roman/times new roman bold.ttf"));
+// FontManager.RegisterFont( File.OpenRead("Times New Roman/times new roman bold italic.ttf"));
+// FontManager.RegisterFont( File.OpenRead("Times New Roman/times new roman italic.ttf"));
 
 
 
